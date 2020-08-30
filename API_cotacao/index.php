@@ -3,6 +3,11 @@ require_once "app/modules/HgAPI.php";
 
 $quotation = new HgAPI();
 $return = $quotation->getAll();
+$currency = 'GBP';
+if($currency){
+	$returnCurrency = $quotation->currency($currency);
+	$variationCurrency = ($returnCurrency[1] < $returnCurrency[2]) ? 'danger' : 'primary';
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -15,38 +20,50 @@ $return = $quotation->getAll();
     <link rel="shortcut icon" href="public/images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="public/images/favicon.ico" type="image/x-icon">
 	<link rel="stylesheet" href="public/css/style.css">
+
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
+	  <header>
+		  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			  <a class="navbar-brand" href="https://github.com/ednosmab/APIs">API Cotação</a>
+			  <div class="collapse navbar-collapse" id="textoNavbar">
+				  <ul class="navbar-nav mr-auto">
+					  <li class="nav-item">
+						  <a class="nav-link" href="https://hgbrasil.com/status/finance">HG API</a>
+					  </li>
+				  </ul>
+				  <span class="navbar-text">
+				  <ul class="navbar-nav mr-auto">
+					  <li class="nav-item active">
+						  <a class="nav-link" href="https://www.linkedin.com/in/edson-garcia-14138a34/">in</a>
+					  </li>
+					  <li class="nav-item active">
+						  <a class="nav-link" href="https://bitbucket.org/edsongj/">Bitbucket</a>
+					  </li>
+				  </ul>
+				  </span>
+			  </div>
+		  </nav>
+	  </header>
 	  <div class="container">
-		<header>
-			<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-				<a class="navbar-brand" href="https://github.com/ednosmab/APIs">API Cotação</a>
-				<div class="collapse navbar-collapse" id="textoNavbar">
-					<ul class="navbar-nav mr-auto">
-						<li class="nav-item">
-							<a class="nav-link" href="https://hgbrasil.com/status/finance">HG API</a>
-						</li>
-					</ul>
-					<span class="navbar-text">
-					<ul class="navbar-nav mr-auto">
-						<li class="nav-item">
-							<a class="nav-link" href="https://www.linkedin.com/in/edson-garcia-14138a34/">Linkedin</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="https://bitbucket.org/edsongj/">Bitbucket</a>
-						</li>
-					</ul>
-					</span>
-				</div>
-			</nav>
-		</header>
 		<div class="jumbotron">
 			<h1 class="display-4">Cotação de Moedas</h1>
 			<p class="lead">Um pequeno exemplo de consumo de uma api disponibilizada pela</p>
 			<a class="btn btn-primary btn-lg"  href="https://hgbrasil.com/status/finance">HG API</a>
 		</div>
+		<?php if(isset($returnCurrency) && !empty($returnCurrency)):?>
+			<div class="row principal">
+				<div class="card">
+					<div class="card-body">
+						<h1 class="card-title display-3">Cotação do <?=$returnCurrency[0]?></h1>
+						<p class="card-text"><?=$returnCurrency[0]?> <span class="badge badge-pill badge-<?= $variationCurrency;?>"><?=$returnCurrency[1]?></span>
+					</div>
+				</div>
+			</div>
+		<?php endif;?>
 		<div class="row">
 			<?php if(!empty($return) && is_array($return)):?>
 			<?php foreach ($return['results']['currencies'] as $currency):?>
@@ -64,8 +81,25 @@ $return = $quotation->getAll();
 			</div>
 			<?php endif; endforeach; endif;?>
 		</div>
-    </div>
-    <!-- Optional JavaScript -->
+		
+	</div>
+	<div class="d-none">Ícones feitos por <a href="https://www.flaticon.com/br/autores/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/br/" title="Flaticon">www.flaticon.com</a></div>
+	<!-- Footer -->
+<footer class="bg-info">
+
+<!-- Copyright -->
+	<div class=" text-center py-3 fontL">© 2020
+		<span> | </span>
+		<strong>
+			<a href="https://www.linkedin.com/in/edson-garcia-14138a34/" class="fontL"> Edson Garcia</a>
+		</strong>
+	</div>
+<!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+	
+	<!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

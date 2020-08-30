@@ -5,10 +5,27 @@
 }
 .jumbotron{
     height: 210px;
+    margin-top: 15px;
+}
+div.principal .card, div.principal .card-body{
+    margin: auto;
+    width: 90%;
+    text-align: center;
+    background-color: #b8e6da;
+}
+div.principal .card .card-text{
+    font-size: 2em;
+    color: rgb(59, 69, 87);
 }
 .card{
     margin-top: 2em;
+    margin-bottom: 2em;
 }
 .card-body{
     width: 19em;
 }
+.fontL{
+    color: #ffffff;
+    border-bottom: 1px solid #fff;
+}
+

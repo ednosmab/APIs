@@ -30,15 +30,17 @@ class HgAPI
         return $respCotacao;
     }
 
-    public function currencies()
+    public function currency($currency = null)
     {
-        // $dolar = $response['results']['currencies']['USD']['buy'];
-        // $variationD = $response['results']['currencies']['USD']['variation'];
-        // $euro = $response['results']['currencies']['EUR']['buy'];
-        // $variationE = $response['results']['currencies']['EUR']['variation'];
-        // $retorno = [
-        //     $dolar, $variationD,
-        //     $euro, $variationE
-        // ];
+        if($currency){
+            $name = $this->response['results']['currencies'][$currency]['name'];
+            $corrency = $this->response['results']['currencies'][$currency]['buy'];
+            $variation = $this->response['results']['currencies'][$currency]['variation'];
+            $return = [
+                $name, $corrency, $variation,
+            ];
+
+            return $return;
+        }
     }
 }
