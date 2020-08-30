@@ -1,14 +1,8 @@
 <?php
 require_once "app/modules/HgAPI.php";
 
-$cotacao = new HgAPI();
-$retorno = $cotacao->getAll();
-if(!empty($retorno) && is_array($retorno)){
-  $moedaD = $retorno[0];
-  $moedaE = $retorno[2];
-  $variacaoD = ($retorno[1] > -2.927) ? 'danger' : 'primary';
-  $variacaoE = ($retorno[3] > -2.227) ? 'danger' : 'primary';
-}
+$quotation = new HgAPI();
+$return = $quotation->getAll();
 ?>
 <!doctype html>
 <html lang="en">
@@ -20,28 +14,56 @@ if(!empty($retorno) && is_array($retorno)){
 
     <link rel="shortcut icon" href="public/images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="public/images/favicon.ico" type="image/x-icon">
-
+	<link rel="stylesheet" href="public/css/style.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
-    <div class="container">
-      <div class="col">
-        <div class="row">
-            <p>Cotação do Dólar</p>
-        </div>
-        <div class="row">
-            <p>Dólar <span class="badge badge-pill badge-<?= $variacaoD?>"><?= $moedaD?></span></p>
-        </div>
-      </div>
-      <div class="col">
-        <div class="row">
-            <p>Cotação do Euro</p>
-        </div>
-        <div class="row">
-            <p>Euro <span class="badge badge-pill badge-<?= $variacaoE?>"><?= $moedaE?></span></p>
-        </div>
-      </div>
+	  <div class="container">
+		<header>
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+				<a class="navbar-brand" href="https://github.com/ednosmab/APIs">API Cotação</a>
+				<div class="collapse navbar-collapse" id="textoNavbar">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item">
+							<a class="nav-link" href="https://hgbrasil.com/status/finance">HG API</a>
+						</li>
+					</ul>
+					<span class="navbar-text">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item">
+							<a class="nav-link" href="https://www.linkedin.com/in/edson-garcia-14138a34/">Linkedin</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="https://bitbucket.org/edsongj/">Bitbucket</a>
+						</li>
+					</ul>
+					</span>
+				</div>
+			</nav>
+		</header>
+		<div class="jumbotron">
+			<h1 class="display-4">Cotação de Moedas</h1>
+			<p class="lead">Um pequeno exemplo de consumo de uma api disponibilizada pela</p>
+			<a class="btn btn-primary btn-lg"  href="https://hgbrasil.com/status/finance">HG API</a>
+		</div>
+		<div class="row">
+			<?php if(!empty($return) && is_array($return)):?>
+			<?php foreach ($return['results']['currencies'] as $currency):?>
+			<?php if(isset($currency['name'])):?>
+			<?php
+				$variation = ($currency['buy'] < $currency['variation']) ? 'danger' : 'primary';
+			?>
+			<div class="col">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Cotação do <?=$currency['name']?></h5>
+						<p class="card-text"><?=$currency['name']?> <span class="badge badge-pill badge-<?= $variation;?>"><?=$currency['buy']?></span>
+					</div>
+				</div>
+			</div>
+			<?php endif; endforeach; endif;?>
+		</div>
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

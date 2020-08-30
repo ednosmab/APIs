@@ -5,7 +5,7 @@ class HgAPI
     private $key;
     private $url = null;
     private $error = null;
-    private $respCotacao = null;
+    public $response = null;
 
     public function __construct()
     {
@@ -18,23 +18,27 @@ class HgAPI
         if($this->key){
             $this->url = HG_API.HG_COTACAO.$this->key;
             if($this->url){
-                $response = file_get_contents($this->url);
-                if(!empty($response) > 0){
-                    $response = json_decode($response, true);
-                    $dolar = $response['results']['currencies']['USD']['buy'];
-                    $variationD = $response['results']['currencies']['USD']['variation'];
-                    $euro = $response['results']['currencies']['EUR']['buy'];
-                    $variationE = $response['results']['currencies']['EUR']['variation'];
-                    $retorno = [
-                        $dolar, $variationD,
-                        $euro, $variationE
-                    ];
-                    $this->respCotacao = $retorno;
+                $this->response = file_get_contents($this->url);
+                if(!empty($this->response) > 0){
+                    $this->response = json_decode($this->response, true);
+                    $respCotacao = $this->response;
                 }
             }else{
-                $this->respCotacao = "URL não informado";
+                $respCotacao = "URL não informado";
             }
         }
-        return $this->respCotacao;
+        return $respCotacao;
+    }
+
+    public function currencies()
+    {
+        // $dolar = $response['results']['currencies']['USD']['buy'];
+        // $variationD = $response['results']['currencies']['USD']['variation'];
+        // $euro = $response['results']['currencies']['EUR']['buy'];
+        // $variationE = $response['results']['currencies']['EUR']['variation'];
+        // $retorno = [
+        //     $dolar, $variationD,
+        //     $euro, $variationE
+        // ];
     }
 }
